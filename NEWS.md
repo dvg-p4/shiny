@@ -1,33 +1,28 @@
-shiny development
-================
+shiny 1.7.2
+===========
 
-## Full changelog
+### Fixes and improvements
 
-### Breaking changes
+* Closed #1545: `insertUI()` now executes `<script>` tags. (#3630)
 
-### Minor new features and improvements
+* Closed tidyverse/dplyr#5552: Compatibility of dplyr 1.0 (and rlang chained errors in general) with `req()`, `validate()`, and friends.
+
+* Closed tidyverse/dplyr#6154: Values from an `actionButton()` had S3 classes in the incorrect order.
+
+* The auto-reload feature (`options(shiny.autoreload=TRUE)`) was not being activated by `devmode(TRUE)`, despite a console message asserting that it was. (#3620)
+
+* Default for `ref` input in `runGithub()` changed from `"master"` to `"HEAD"`. (#3346)
+
+* Previously, updating an input value without a corresponding Input binding element did not trigger a JavaScript `shiny:inputchanged` event. Now, if no Input binding element is found, the `shiny:inputchanged` event is triggered on `window.document`. (#3584)
+
+* Closed #2955: Input and output bindings previously attempted to use `el['data-input-id']`, but that never worked. They now use `el.getAttribute('data-input-id')` instead. (#3538)
 
 * Shiny's internal HTML dependencies are now mounted dynamically instead of statically. (#3537)
 
 * HTML dependencies that are sent to dynamic UI now have better type checking, and no longer require a `dep.src.href` field. (#3537)
 
-* Default for `ref` input in `runGithub()` changed from `"master"` to `"HEAD"`. (#3346)
-
 * When taking a test snapshot, the sort order of the json keys of the `input`, `output`, and `export` fields is currently sorted using the locale of the machine. This can lead to inconsistent test snapshot results. To opt-in to a consistent ordering of snapshot fields with `{shinytest}`, please set the global option `options(shiny.snapshotsortc = TRUE)`. `{shinytest2}` users do not need to set this value. (#3515)
 
-* The auto-reload feature (`options(shiny.autoreload=TRUE)`) was not being activated by `devmode(TRUE)`, despite a console message asserting that it was. (#3620)
-
-### Bug fixes
-
-* Closed tidyverse/dplyr#5552: Compatibility of dplyr 1.0 (and rlang chained errors in general) with `req()`, `validate()`, and friends.
-
-* Closed #1545: `insertUI()` now executes `<script>` tags. (#3630)
-
-* Closed #2955: Input and output bindings previously attempted to use `el['data-input-id']`, but that never worked. They now use `el.getAttribute('data-input-id')` instead. (#3538)
-
-* Closed tidyverse/dplyr#6154: Values from an `actionButton()` had S3 classes in the incorrect order.
-
-* Fixed a bug where updating an input value without a corresponding Input binding element did not trigger a JavaScript `shiny:inputchanged` event. Now, if no Input binding element is found, the `shiny:inputchanged` event is triggered on `window.document`. (#3584)
 
 shiny 1.7.1
 ===========
