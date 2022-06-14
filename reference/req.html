@@ -20,7 +20,7 @@ nor displayed in the Shiny app's UI)."><meta property="og:image" content="/logo.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shiny</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1.9003</span>
       </span>
     </div>
 
@@ -66,37 +66,42 @@ nor displayed in the Shiny app's UI).</p>
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>Values to check for truthiness.</p></dd>
+
+
 <dt>cancelOutput</dt>
 <dd><p>If <code>TRUE</code> and an output is being evaluated, stop
 processing as usual but instead of clearing the output, leave it in
 whatever state it happens to be in.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The first value that was passed in.</p>
+    
+
+<p>The first value that was passed in.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p>The <code>req</code> function was designed to be used in one of two ways. The first
 is to call it like a statement (ignoring its return value) before attempting
-operations using the required values:</p><div class="sourceCode"><pre><code><span class="va">rv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reactiveValues.html">reactiveValues</a></span><span class="op">(</span>state <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reactive.html">reactive</a></span><span class="op">(</span><span class="op">{</span>
-  <span class="fu"><a href="../reference/req.html">req</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">a</span>, <span class="va">input</span><span class="op">$</span><span class="va">b</span>, <span class="va">rv</span><span class="op">$</span><span class="va">state</span><span class="op">)</span>
-  <span class="co"># Code that uses input$a, input$b, and/or rv$state...</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
-
+operations using the required values:</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a>rv &lt;-<span class="st"> </span><span class="kw">reactiveValues</span>(<span class="dt">state =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>r &lt;-<span class="st"> </span><span class="kw">reactive</span>({</span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="kw">req</span>(input<span class="op">$</span>a, input<span class="op">$</span>b, rv<span class="op">$</span>state)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  <span class="co"># Code that uses input$a, input$b, and/or rv$state...</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>})</span></code></pre><p></p></div>
 <p>In this example, if <code>r()</code> is called and any of <code>input$a</code>,
 <code>input$b</code>, and <code>rv$state</code> are <code>NULL</code>, <code>FALSE</code>, <code>""</code>,
 etc., then the <code>req</code> call will trigger an error that propagates all the
 way up to whatever render block or observer is executing.</p>
-<p>The second is to use it to wrap an expression that must be truthy:</p><div class="sourceCode"><pre><code><span class="va">output</span><span class="op">$</span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/renderPlot.html">renderPlot</a></span><span class="op">(</span><span class="op">{</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="../reference/req.html">req</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">plotType</span><span class="op">)</span> <span class="op">==</span> <span class="st">"histogram"</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="fu">dataset</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">plotType</span> <span class="op">==</span> <span class="st">"scatter"</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu">qplot</span><span class="op">(</span><span class="fu">dataset</span><span class="op">(</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
-
+<p>The second is to use it to wrap an expression that must be truthy:</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a>output<span class="op">$</span>plot &lt;-<span class="st"> </span><span class="kw">renderPlot</span>({</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  <span class="cf">if</span> (<span class="kw">req</span>(input<span class="op">$</span>plotType) <span class="op">==</span><span class="st"> "histogram"</span>) {</span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="kw">hist</span>(<span class="kw">dataset</span>())</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  } <span class="cf">else</span> <span class="cf">if</span> (input<span class="op">$</span>plotType <span class="op">==</span><span class="st"> "scatter"</span>) {</span>
+<span id="cb1-5"><a href="#cb1-5"></a>    <span class="kw">qplot</span>(<span class="kw">dataset</span>(), <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y))</span>
+<span id="cb1-6"><a href="#cb1-6"></a>  }</span>
+<span id="cb1-7"><a href="#cb1-7"></a>})</span></code></pre><p></p></div>
 <p>In this example, <code>req(input$plotType)</code> first checks that
 <code>input$plotType</code> is truthy, and if so, returns it. This is a convenient
 way to check for a value "inline" with its first use.</p>
@@ -169,7 +174,7 @@ as a result of those calls. See the examples below for concrete scenarios.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

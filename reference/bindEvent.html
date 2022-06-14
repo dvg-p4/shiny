@@ -26,7 +26,7 @@ renderText() and renderPlot())."><meta property="og:image" content="/logo.png"><
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shiny</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1.9003</span>
       </span>
     </div>
 
@@ -86,26 +86,37 @@ with <code><a href="bindCache.html">bindCache()</a></code>, and it can also be u
     <dl><dt>x</dt>
 <dd><p>An object to wrap so that is triggered only when a the specified
 event occurs.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>One or more expressions that represents the event; this can be a
 simple reactive value like <code>input$click</code>, a call to a reactive expression
 like <code>dataset()</code>, or even a complex expression inside curly braces. If
 there are multiple expressions in the <code>...</code>, then it will take a dependency
 on all of them.</p></dd>
+
+
 <dt>ignoreNULL</dt>
 <dd><p>Whether the action should be triggered (or value
 calculated) when the input is <code>NULL</code>. See Details.</p></dd>
+
+
 <dt>ignoreInit</dt>
 <dd><p>If <code>TRUE</code>, then, when the eventified object is first
 created/initialized, don't trigger the action or (compute the value). The
 default is <code>FALSE</code>. See Details.</p></dd>
+
+
 <dt>once</dt>
 <dd><p>Used only for observers. Whether this <code>observer</code> should be
 immediately destroyed after the first time that the code in the observer is
 run. This pattern is useful when you want to subscribe to a event that
 should only happen once.</p></dd>
+
+
 <dt>label</dt>
 <dd><p>A label for the observer or reactive, useful for debugging.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -221,7 +232,8 @@ users. But it might make sense to also not do the computation until the
 user sets both <code>x</code> and <code>y</code>, and then clicks on an <a href="actionButton.html">actionButton</a> named
 <code>go</code>.</p>
 <p>To use both caching and events, the object should first be passed to
-<code><a href="bindCache.html">bindCache()</a></code>, then <code>bindEvent()</code>. For example:</p><div class="sourceCode NA"><pre><code></code></pre><p></p></div>
+<code><a href="bindCache.html">bindCache()</a></code>, then <code>bindEvent()</code>. For example:</p>
+<p></p><div class="sourceCode NA"><pre><code></code></pre><p></p></div>
 <p>Anything that consumes <code>r()</code> will take a reactive dependency on the event
 expression given to <code>bindEvent()</code>, and not the cache key expression given to
 <code><a href="bindCache.html">bindCache()</a></code>. In this case, it is just <code>input$go</code>.</p>
@@ -239,7 +251,7 @@ expression given to <code>bindEvent()</code>, and not the cache key expression g
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

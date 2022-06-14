@@ -24,7 +24,7 @@ automatically propagate to outputs that use the reactive.'><meta property="og:im
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shiny</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.1.9003</span>
       </span>
     </div>
 
@@ -78,20 +78,29 @@ automatically propagate to outputs that use the reactive.</p>
 <dd><p>A list of tests. Each test should equal <code>NULL</code> for success,
 <code>FALSE</code> for silent failure, or a string for failure with an error
 message.</p></dd>
+
+
 <dt>errorClass</dt>
 <dd><p>A CSS class to apply. The actual CSS string will have
 <code>shiny-output-error-</code> prepended to this value.</p></dd>
+
+
 <dt>expr</dt>
 <dd><p>An expression to test. The condition will pass if the expression
 meets the conditions spelled out in Details.</p></dd>
+
+
 <dt>message</dt>
 <dd><p>A message to convey to the user if the validation condition is
 not met. If no message is provided, one will be created using <code>label</code>.
 To fail with no message, use <code>FALSE</code> for the message.</p></dd>
+
+
 <dt>label</dt>
 <dd><p>A human-readable name for the field that may be missing. This
 parameter is not needed if <code>message</code> is provided, but must be provided
 otherwise.</p></dd>
+
 </dl></div>
     <div id="need-">
     <h2><code>need()</code></h2>
@@ -108,10 +117,10 @@ can create your own validation test functions. A passing test should return
 <code>NULL</code>. A failing test should return either a string providing the error
 to display to the user, or if the failure should happen silently, <code>FALSE</code>.</p>
 <p>Alternatively you can use <code>validate()</code> within an <code>if</code> statement, which is
-particularly useful for more complex conditions:</p><div class="sourceCode"><pre><code><span class="kw">if</span> <span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">x</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="va">input</span><span class="op">$</span><span class="va">choice</span> <span class="op">==</span> <span class="st">"positive"</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/validate.html">validate</a></span><span class="op">(</span><span class="st">"If choice is positive then x must be greater than 0"</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
-
+particularly useful for more complex conditions:</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1"></a><span class="cf">if</span> (input<span class="op">$</span>x <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;&amp;</span><span class="st"> </span>input<span class="op">$</span>choice <span class="op">==</span><span class="st"> "positive"</span>) {</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  <span class="kw">validate</span>(<span class="st">"If choice is positive then x must be greater than 0"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>}</span></code></pre><p></p></div>
     </div>
 
     <div id="ref-examples">
@@ -153,7 +162,7 @@ particularly useful for more complex conditions:</p><div class="sourceCode"><pre
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
