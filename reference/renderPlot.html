@@ -55,18 +55,18 @@ slot.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">renderPlot</span><span class="op">(</span>
-  <span class="va">expr</span>,
-  width <span class="op">=</span> <span class="st">"auto"</span>,
-  height <span class="op">=</span> <span class="st">"auto"</span>,
-  res <span class="op">=</span> <span class="fl">72</span>,
-  <span class="va">...</span>,
-  alt <span class="op">=</span> <span class="cn">NA</span>,
-  env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  quoted <span class="op">=</span> <span class="cn">FALSE</span>,
-  execOnResize <span class="op">=</span> <span class="cn">FALSE</span>,
-  outputArgs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">renderPlot</span><span class="op">(</span></span>
+<span>  <span class="va">expr</span>,</span>
+<span>  width <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  height <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  res <span class="op">=</span> <span class="fl">72</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  alt <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  quoted <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  execOnResize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  outputArgs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -89,12 +89,12 @@ to both <code>width</code> and <code>height</code>.</p></dd>
 
 <dt>res</dt>
 <dd><p>Resolution of resulting plot, in pixels per inch. This value is
-passed to <code><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">grDevices::png()</a></code>. Note that this affects the resolution of PNG
+passed to <code><a href="plotPNG.html">plotPNG()</a></code>. Note that this affects the resolution of PNG
 rendering in R; it won't change the actual ppi of the browser.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Arguments to be passed through to <code><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">grDevices::png()</a></code>.
+<dd><p>Arguments to be passed through to <code><a href="plotPNG.html">plotPNG()</a></code>.
 These can be used to set the width, height, background color, etc.</p></dd>
 
 
@@ -175,7 +175,7 @@ expedite the rendering of identical plots.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>
