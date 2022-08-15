@@ -5,11 +5,20 @@ shiny 1.7.2.9000
 
 ### Breaking changes
 
+* Closed #2866: `session$resetBrush()` now properly namespaces the brush ID automatically within a module. This breaks previous workarounds, which will now result in a doubly-namespaced brush ID. This function has also been supplemented with the slightly more user-friendly `shiny::resetBrush()`; see details below.
+
 ### New features and improvements
+
+* Added `resetBrush()` function for a slightly more user-friendly alternative to `session$resetBrush()` with syntax similar to the `update*()` functions.
+
+* Closed #1456: Added `updateBrushCoords()` function to programatically update the area brushed on a plot, similar to other `update*()` functions. Tested primarily with `ggplot2`, but may work with reduced functionality with base graphics and images. See `help(updateBrushCoords, shiny)` for more details.
 
 ### Bug fixes
 
+* Closed #2344 and #1642: Overhauled brush code so that brush handlers (as well as click/hover handlers) persist when a plot is redrawn, and consistently move any drawn brushes to the correct location if the plot is resized. This fixes an issue where a plot that's redrawn in response to a brush would circumvent the debouncer and sometimes update twice each time the brush was moved--or worse, constantly re-update itself as the brush was being dragged. This also fixes a frustrating-to-replicate bug where the rectangle drawn on the plot could become duplicated and desynced from the coordinates sent to the server with a series of rapid user inputs.
+
 * Partial fix for #3664: `dateInput` and `dateRangeInput` will not send spurious values to the server while typing until the user presses enter or clicks out of the field, except for `null` or `NA` when the field is completely empty.
+
 
 shiny 1.7.2
 ===========
