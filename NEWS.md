@@ -1,3 +1,16 @@
+shiny 1.7.2.9000
+================
+
+## Full changelog
+
+### Breaking changes
+
+### New features and improvements
+
+### Bug fixes
+
+* Partial fix for #3664: `dateInput` and `dateRangeInput` will not send spurious values to the server while typing until the user presses enter or clicks out of the field, except for `null` or `NA` when the field is completely empty.
+
 shiny 1.7.2
 ===========
 
