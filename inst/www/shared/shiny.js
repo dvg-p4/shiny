@@ -1,4 +1,4 @@
-/*! shiny 1.7.2.9000 | (c) 2012-2022 RStudio, PBC. | License: GPL-3 | file LICENSE */
+/*! shiny 1.7.2.3999 | (c) 2012-2022 RStudio, PBC. | License: GPL-3 | file LICENSE */
 (function() {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
@@ -10437,6 +10437,7 @@
       coordmap = newCoordmap;
       brush.updateCoordmap(coordmap);
       if ($el.data("mostRecentBrush")) {
+        console.log("Sending brush info due to updateCoordmap");
         brushInfoSender.normalCall();
       }
     }
@@ -10460,9 +10461,11 @@
       brush.setPanelIdx(data.panelIdx);
       if (brush.getPanel()) {
         brush.boundsData(data.imgCoords);
+        console.log("Sending brush info due to successful setBrush");
         brushInfoSender.immediateCall();
       } else {
         brush.reset();
+        console.log("Sending brush info due to failed setBrush");
         brushInfoSender.immediateCall();
       }
     });
@@ -10566,14 +10569,17 @@
     }
     function mousemoveBrushing(e) {
       brush.brushTo(coordmap.mouseOffsetCss(e));
+      console.log("Sending brush info due to mousemoveBrushing");
       brushInfoSender.normalCall();
     }
     function mousemoveDragging(e) {
       brush.dragTo(coordmap.mouseOffsetCss(e));
+      console.log("Sending brush info due to mousemoveDragging");
       brushInfoSender.normalCall();
     }
     function mousemoveResizing(e) {
       brush.resizeTo(coordmap.mouseOffsetCss(e));
+      console.log("Sending brush info due to mousemoveResizing");
       brushInfoSender.normalCall();
     }
     function mouseupBrushing(e) {
@@ -10585,9 +10591,11 @@
       setCursorStyle("crosshair");
       if (brush.down().x === brush.up().x && brush.down().y === brush.up().y) {
         brush.reset();
+        console.log("Sending brush info due to zero-length brush (mouseup)");
         brushInfoSender.immediateCall();
         return;
       }
+      console.log("Sending brush info due to completed brush (mouseup)");
       brushInfoSender.immediateCall();
     }
     function mouseupDragging(e) {
@@ -10597,6 +10605,7 @@
       brush.up(coordmap.mouseOffsetCss(e));
       brush.stopDragging();
       setCursorStyle("grabbable");
+      console.log("Sending brush info due to completed drag");
       brushInfoSender.immediateCall();
     }
     function mouseupResizing(e) {
@@ -10605,6 +10614,7 @@
       (0, import_jquery32.default)(document).off("mousemove.image_brush").off("mouseup.image_brush");
       brush.up(coordmap.mouseOffsetCss(e));
       brush.stopResizing();
+      console.log("Sending brush info due to completed resize");
       brushInfoSender.immediateCall();
     }
     function onResetImg() {
@@ -10614,12 +10624,14 @@
         }
         brush.reset();
         if ($el.data("mostRecentBrush")) {
+          console.log("Sending brush info due to image reset");
           brushInfoSender.immediateCall();
         }
       }
     }
     function onResize() {
       brush.onImgResize();
+      console.log("Sending brush info due to image resize");
       brushInfoSender.immediateCall();
     }
     return {
@@ -13212,7 +13224,7 @@
   var windowShiny2;
   function setShiny(windowShiny_) {
     windowShiny2 = windowShiny_;
-    windowShiny2.version = "1.7.2.9000";
+    windowShiny2.version = "1.7.2.3999";
     var _initInputBindings = initInputBindings(), inputBindings = _initInputBindings.inputBindings, fileInputBinding2 = _initInputBindings.fileInputBinding;
     var _initOutputBindings = initOutputBindings(), outputBindings = _initOutputBindings.outputBindings;
     setFileInputBinding(fileInputBinding2);

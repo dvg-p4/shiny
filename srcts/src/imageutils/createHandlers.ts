@@ -153,7 +153,7 @@ function createBrushHandler(
     // Made sure to send new coords if the new map changed the pixel scale or
     // clipped us off the side, and we were the most recent brush with our id
     if ($el.data("mostRecentBrush")) {
-      console.log("Sending brush info due to updateCoordmap")
+      console.log("Sending brush info due to updateCoordmap");
       brushInfoSender.normalCall(); // Don't jump the queue--see #1642
     }
   }
@@ -196,7 +196,7 @@ function createBrushHandler(
     // check that we set a valid panel
     if (brush.getPanel()) {
       brush.boundsData(data.imgCoords);
-      console.log("Sending brush info due to successful setBrush")
+      console.log("Sending brush info due to successful setBrush");
       brushInfoSender.immediateCall();
       // This is a race condition if multiple plots share the same brushId
       // and outputId isn't specified; documentation should warn about that.
@@ -205,7 +205,7 @@ function createBrushHandler(
     } else {
       // If the panel wasn't valid, fully reset the brush
       brush.reset();
-      console.log("Sending brush info due to failed setBrush")
+      console.log("Sending brush info due to failed setBrush");
       brushInfoSender.immediateCall();
     }
   });
@@ -404,19 +404,19 @@ function createBrushHandler(
   // mousemove handlers while brushing or dragging
   function mousemoveBrushing(e: JQuery.MouseMoveEvent) {
     brush.brushTo(coordmap.mouseOffsetCss(e));
-    console.log("Sending brush info due to mousemoveBrushing")
+    console.log("Sending brush info due to mousemoveBrushing");
     brushInfoSender.normalCall();
   }
 
   function mousemoveDragging(e: JQuery.MouseMoveEvent) {
     brush.dragTo(coordmap.mouseOffsetCss(e));
-    console.log("Sending brush info due to mousemoveDragging")
+    console.log("Sending brush info due to mousemoveDragging");
     brushInfoSender.normalCall();
   }
 
   function mousemoveResizing(e: JQuery.MouseMoveEvent) {
     brush.resizeTo(coordmap.mouseOffsetCss(e));
-    console.log("Sending brush info due to mousemoveResizing")
+    console.log("Sending brush info due to mousemoveResizing");
     brushInfoSender.normalCall();
   }
 
@@ -436,7 +436,7 @@ function createBrushHandler(
     // and return.
     if (brush.down().x === brush.up().x && brush.down().y === brush.up().y) {
       brush.reset();
-      console.log("Sending brush info due to zero-length brush (mouseup)")
+      console.log("Sending brush info due to zero-length brush (mouseup)");
       brushInfoSender.immediateCall();
       return;
     }
@@ -444,7 +444,7 @@ function createBrushHandler(
     // Send info immediately on mouseup, since shinySetInputValue will already
     // filter out any duplicate sends and we want the brush to be responsive
     // when the user completes their action.
-    console.log("Sending brush info due to completed brush (mouseup)")
+    console.log("Sending brush info due to completed brush (mouseup)");
     brushInfoSender.immediateCall();
   }
 
@@ -460,7 +460,7 @@ function createBrushHandler(
     setCursorStyle("grabbable");
 
     // if (brushInfoSender.isPending()) brushInfoSender.immediateCall();
-    console.log("Sending brush info due to completed drag")
+    console.log("Sending brush info due to completed drag");
     brushInfoSender.immediateCall();
   }
 
@@ -474,7 +474,7 @@ function createBrushHandler(
     brush.stopResizing();
 
     // if (brushInfoSender.isPending()) brushInfoSender.immediateCall();
-    console.log("Sending brush info due to completed resize")
+    console.log("Sending brush info due to completed resize");
     brushInfoSender.immediateCall();
   }
 
@@ -496,7 +496,7 @@ function createBrushHandler(
       }
       brush.reset();
       if ($el.data("mostRecentBrush")) {
-        console.log("Sending brush info due to image reset")
+        console.log("Sending brush info due to image reset");
         brushInfoSender.immediateCall();
       }
     }
@@ -507,7 +507,7 @@ function createBrushHandler(
   // triggered in image.ts if the plot is a cached plot.
   function onResize() {
     brush.onImgResize();
-    console.log("Sending brush info due to image resize")
+    console.log("Sending brush info due to image resize");
     brushInfoSender.immediateCall();
   }
 
