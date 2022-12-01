@@ -236,6 +236,7 @@ function createBrushHandler(
 
     // We're in a new or reset state
     if (isNaN(coords.xmin)) {
+      console.log("sending null to server, somehow");
       shinySetInputValue(inputId, null);
       // Must tell other brushes to clear.
       imageOutputBinding
