@@ -296,6 +296,7 @@ function createBrushHandler(
     coords.brushId = inputId;
     coords.outputId = outputId;
 
+    console.log("Sending brush input data to server, somehow");
     // Send data to server
     shinySetInputValue(inputId, coords);
 
