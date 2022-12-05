@@ -10952,6 +10952,7 @@
 
   // srcts/src/imageutils/resetBrush.ts
   function resetBrush(brushId) {
+    console.log("Directly sending info in resetBrush()");
     shinySetInputValue(brushId, null);
     imageOutputBinding.find(document.documentElement).trigger("shiny-internal:brushed", {
       brushId: brushId,
@@ -10961,7 +10962,6 @@
 
   // srcts/src/imageutils/setBrush.ts
   function setBrush(brushId, coords, panel, outputId) {
-    shinySetInputValue(brushId, null);
     imageOutputBinding.find(document.documentElement).trigger("shiny-internal:setBrush", {
       brushId: brushId,
       imgCoords: coords,
