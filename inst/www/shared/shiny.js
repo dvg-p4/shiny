@@ -1,4 +1,4 @@
-/*! shiny 1.7.2.9005 | (c) 2012-2022 RStudio, PBC. | License: GPL-3 | file LICENSE */
+/*! shiny 1.7.2.9006 | (c) 2012-2022 RStudio, PBC. | License: GPL-3 | file LICENSE */
 (function() {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
@@ -10430,6 +10430,7 @@
     };
   }
   function createBrushHandler(inputId, $el, opts, initCoordmap2, outputId) {
+    console.log("Creating brush " + inputId);
     var expandPixels = 20;
     var coordmap = initCoordmap2;
     var brush = createBrush($el, opts, coordmap, expandPixels);
@@ -10451,12 +10452,12 @@
       }
     });
     $el.on("shiny-internal:setBrush.image_output", function(e, data) {
-      console.log("brush " + inputId + "heard setBrush event");
+      console.log("brush " + inputId + " heard setBrush event");
       if (data.brushId !== inputId)
         return;
       if (data.outputId && data.outputId !== outputId)
         return;
-      console.log("brush " + inputId + "reponding to setBrush event");
+      console.log("brush " + inputId + " reponding to setBrush event");
       if (brush.isBrushing || brush.isDragging || brush.isResizing) {
         (0, import_jquery32.default)(document).off("mousemove.image_brush").off("mouseup.image_brush");
       }
@@ -10638,6 +10639,7 @@
       console.log("Sending brush info due to image resize");
       brushInfoSender.immediateCall();
     }
+    console.log("Finished creating brush " + inputId);
     return {
       mousedown: mousedown,
       mousemove: mousemove,
@@ -13229,7 +13231,7 @@
   var windowShiny2;
   function setShiny(windowShiny_) {
     windowShiny2 = windowShiny_;
-    windowShiny2.version = "1.7.2.9005";
+    windowShiny2.version = "1.7.2.9006";
     var _initInputBindings = initInputBindings(), inputBindings = _initInputBindings.inputBindings, fileInputBinding2 = _initInputBindings.fileInputBinding;
     var _initOutputBindings = initOutputBindings(), outputBindings = _initOutputBindings.outputBindings;
     setFileInputBinding(fileInputBinding2);
