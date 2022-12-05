@@ -7,6 +7,7 @@ function setBrush(
   panel: number,
   outputId: string
 ): void {
+  console.log("setBrush() is running, triggering binding...");
   imageOutputBinding
     .find(document.documentElement)
     .trigger("shiny-internal:setBrush", {
