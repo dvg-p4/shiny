@@ -151,6 +151,9 @@ class ImageOutputBinding extends OutputBinding {
       };
     }
 
+    console.log("coordmap possibly before load:");
+    console.log(opts.coordmap);
+
     // When the image loads, initialize all the interaction handlers. When the
     // value of src is set, the browser may not load the image immediately,
     // even if it's a data URL. If we try to initialize this stuff
@@ -159,7 +162,13 @@ class ImageOutputBinding extends OutputBinding {
     $img.off("load.shiny_image_interaction");
     $img.one("load.shiny_image_interaction", function () {
       // Use a local variable so the type check is happy
+      console.log("coordmap right before initialization:");
+      console.log(opts.coordmap);
+
       const optsCoordmap = (opts.coordmap = initCoordmap($el, opts.coordmap));
+
+      console.log("coordmap right after initialization:");
+      console.log(opts.coordmap);
 
       // This object listens for mousedowns, and triggers mousedown2 and dblclick2
       // events as appropriate.

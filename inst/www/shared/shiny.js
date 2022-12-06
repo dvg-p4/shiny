@@ -1,4 +1,4 @@
-/*! shiny 1.7.2.9006 | (c) 2012-2022 RStudio, PBC. | License: GPL-3 | file LICENSE */
+/*! shiny 1.7.2.9007 | (c) 2012-2022 RStudio, PBC. | License: GPL-3 | file LICENSE */
 (function() {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
@@ -10847,9 +10847,15 @@
             }
           };
         }
+        console.log("coordmap possibly before load:");
+        console.log(opts.coordmap);
         $img.off("load.shiny_image_interaction");
         $img.one("load.shiny_image_interaction", function() {
+          console.log("coordmap right before initialization:");
+          console.log(opts.coordmap);
           var optsCoordmap = opts.coordmap = initCoordmap($el, opts.coordmap);
+          console.log("coordmap right after initialization:");
+          console.log(opts.coordmap);
           var clickInfo = createClickInfo($el, opts.dblclickId, opts.dblclickDelay);
           $el.on("mousedown.image_output", clickInfo.mousedown);
           if (isIE() && IEVersion() === 8) {
@@ -13231,7 +13237,7 @@
   var windowShiny2;
   function setShiny(windowShiny_) {
     windowShiny2 = windowShiny_;
-    windowShiny2.version = "1.7.2.9006";
+    windowShiny2.version = "1.7.2.9007";
     var _initInputBindings = initInputBindings(), inputBindings = _initInputBindings.inputBindings, fileInputBinding2 = _initInputBindings.fileInputBinding;
     var _initOutputBindings = initOutputBindings(), outputBindings = _initOutputBindings.outputBindings;
     setFileInputBinding(fileInputBinding2);
