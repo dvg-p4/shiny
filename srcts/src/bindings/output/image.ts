@@ -159,146 +159,139 @@ class ImageOutputBinding extends OutputBinding {
     // even if it's a data URL. If we try to initialize this stuff
     // immediately, it can cause problems because we use we need the raw image
     // height and width
-    $img.off("load.shiny_image_interaction");
-    $img.one("load.shiny_image_interaction", function () {
-      // Use a local variable so the type check is happy
-      console.log("coordmap right before initialization:");
-      console.log(opts.coordmap);
 
-      const optsCoordmap = (opts.coordmap = initCoordmap($el, opts.coordmap));
+    // But do we actually need the raw image height and width?
+    // ggplot plots seem to come with a coordmap from the server
+    // $img.off("load.shiny_image_interaction");
+    // $img.one("load.shiny_image_interaction", function () {
+    // Use a local variable so the type check is happy
+    const optsCoordmap = (opts.coordmap = initCoordmap($el, opts.coordmap));
 
-      console.log("coordmap right after initialization:");
-      console.log(opts.coordmap);
+    // This object listens for mousedowns, and triggers mousedown2 and dblclick2
+    // events as appropriate.
+    const clickInfo = createClickInfo($el, opts.dblclickId, opts.dblclickDelay);
 
-      // This object listens for mousedowns, and triggers mousedown2 and dblclick2
-      // events as appropriate.
-      const clickInfo = createClickInfo(
-        $el,
-        opts.dblclickId,
-        opts.dblclickDelay
-      );
+    $el.on("mousedown.image_output", clickInfo.mousedown);
 
-      $el.on("mousedown.image_output", clickInfo.mousedown);
+    if (isIE() && IEVersion() === 8) {
+      $el.on("dblclick.image_output", clickInfo.dblclickIE8);
+    }
 
-      if (isIE() && IEVersion() === 8) {
-        $el.on("dblclick.image_output", clickInfo.dblclickIE8);
+    // ----------------------------------------------------------
+    // Register the various event handlers
+    // ----------------------------------------------------------
+    // New strategy: Keep the old handlers around when the image reloads,
+    // simply updating them with a new coordmap. This is accomplished by
+    // storing a reference to their updateCoordmap functions in $el.data,
+    // and calling it with the new coordmap when the image reloads.
+    // This solves #1642
+    if (opts.clickId) {
+      disableDrag($el, $img);
+
+      // Check to see if a click handler already exists
+      if ($el.data("updateClickHandler")) {
+        // If so, update the old handler with the new coordmap
+        $el.data("updateClickHandler")(optsCoordmap);
+      } else {
+        // If not, this is the first load, create a new handler
+        const clickHandler = createClickHandler(
+          opts.clickId,
+          opts.clickClip,
+          optsCoordmap
+        );
+
+        $el.on("mousedown2.image_output", clickHandler.mousedown);
+
+        // $el.on("resize.image_output", clickHandler.onResize); // currently unused
+
+        // When img is reset, do housekeeping: update $el's mouse listener
+        // with the new coordmap and call the handler's onResetImg callback.
+        // These should listen on $el rather than $img so they can persist even
+        // after an error.
+        $el.on("reset.image_output", clickHandler.onResetImg);
+        $el.data("updateClickHandler", clickHandler.updateCoordmap);
       }
+    }
 
-      // ----------------------------------------------------------
-      // Register the various event handlers
-      // ----------------------------------------------------------
-      // New strategy: Keep the old handlers around when the image reloads,
-      // simply updating them with a new coordmap. This is accomplished by
-      // storing a reference to their updateCoordmap functions in $el.data,
-      // and calling it with the new coordmap when the image reloads.
-      // This solves #1642
-      if (opts.clickId) {
-        disableDrag($el, $img);
+    if (opts.dblclickId) {
+      disableDrag($el, $img);
 
-        // Check to see if a click handler already exists
-        if ($el.data("updateClickHandler")) {
-          // If so, update the old handler with the new coordmap
-          $el.data("updateClickHandler")(optsCoordmap);
-        } else {
-          // If not, this is the first load, create a new handler
-          const clickHandler = createClickHandler(
-            opts.clickId,
-            opts.clickClip,
-            optsCoordmap
-          );
+      // Check to see if a double-click handler already exists
+      if ($el.data("updateDblClickHandler")) {
+        // If so, update the old handler with the new coordmap
+        $el.data("updateDblClickHandler")(optsCoordmap);
+      } else {
+        // We'll use the clickHandler's mousedown function, but register it to
+        // our custom 'dblclick2' event.
+        const dblclickHandler = createClickHandler(
+          opts.dblclickId,
+          opts.clickClip,
+          optsCoordmap
+        );
 
-          $el.on("mousedown2.image_output", clickHandler.mousedown);
+        $el.on("dblclick2.image_output", dblclickHandler.mousedown);
 
-          // $el.on("resize.image_output", clickHandler.onResize); // currently unused
-
-          // When img is reset, do housekeeping: update $el's mouse listener
-          // with the new coordmap and call the handler's onResetImg callback.
-          // These should listen on $el rather than $img so they can persist even
-          // after an error.
-          $el.on("reset.image_output", clickHandler.onResetImg);
-          $el.data("updateClickHandler", clickHandler.updateCoordmap);
-        }
+        // $el.on("resize.image_output", dblclickHandler.onResize); // currently unused
+        $el.on("reset.image_output", dblclickHandler.onResetImg);
+        $el.data("updateDblClickHandler", dblclickHandler.updateCoordmap);
       }
+    }
 
-      if (opts.dblclickId) {
-        disableDrag($el, $img);
+    if (opts.hoverId) {
+      disableDrag($el, $img);
 
-        // Check to see if a double-click handler already exists
-        if ($el.data("updateDblClickHandler")) {
-          // If so, update the old handler with the new coordmap
-          $el.data("updateDblClickHandler")(optsCoordmap);
-        } else {
-          // We'll use the clickHandler's mousedown function, but register it to
-          // our custom 'dblclick2' event.
-          const dblclickHandler = createClickHandler(
-            opts.dblclickId,
-            opts.clickClip,
-            optsCoordmap
-          );
+      if ($el.data("updateHoverHandler")) {
+        $el.data("updateHoverHandler")(optsCoordmap);
+      } else {
+        const hoverHandler = createHoverHandler(
+          opts.hoverId,
+          opts.hoverDelay,
+          opts.hoverDelayType,
+          opts.hoverClip,
+          opts.hoverNullOutside,
+          optsCoordmap
+        );
 
-          $el.on("dblclick2.image_output", dblclickHandler.mousedown);
+        $el.on("mousemove.image_output", hoverHandler.mousemove);
+        $el.on("mouseout.image_output", hoverHandler.mouseout);
 
-          // $el.on("resize.image_output", dblclickHandler.onResize); // currently unused
-          $el.on("reset.image_output", dblclickHandler.onResetImg);
-          $el.data("updateDblClickHandler", dblclickHandler.updateCoordmap);
-        }
+        // $el.on("resize.image_output", hoverHandler.onResize); // currently unused
+        $el.on("reset.image_output", hoverHandler.onResetImg);
+        $el.data("updateHoverHandler", hoverHandler.updateCoordmap);
       }
+    }
 
-      if (opts.hoverId) {
-        disableDrag($el, $img);
+    if (opts.brushId) {
+      disableDrag($el, $img);
 
-        if ($el.data("updateHoverHandler")) {
-          $el.data("updateHoverHandler")(optsCoordmap);
-        } else {
-          const hoverHandler = createHoverHandler(
-            opts.hoverId,
-            opts.hoverDelay,
-            opts.hoverDelayType,
-            opts.hoverClip,
-            opts.hoverNullOutside,
-            optsCoordmap
-          );
+      if ($el.data("updateBrushHandler")) {
+        $el.data("updateBrushHandler")(optsCoordmap);
+      } else {
+        const brushHandler = createBrushHandler(
+          opts.brushId,
+          $el,
+          opts,
+          optsCoordmap,
+          outputId
+        );
 
-          $el.on("mousemove.image_output", hoverHandler.mousemove);
-          $el.on("mouseout.image_output", hoverHandler.mouseout);
+        $el.on("mousedown.image_output", brushHandler.mousedown);
+        $el.on("mousemove.image_output", brushHandler.mousemove);
 
-          // $el.on("resize.image_output", hoverHandler.onResize); // currently unused
-          $el.on("reset.image_output", hoverHandler.onResetImg);
-          $el.data("updateHoverHandler", hoverHandler.updateCoordmap);
-        }
+        // resize handler is used for cached plots!
+        $el.on("resize.image_output", brushHandler.onResize);
+        $el.on("reset.image_output", brushHandler.onResetImg);
+        $el.data("updateBrushHandler", brushHandler.updateCoordmap);
       }
+    }
 
-      if (opts.brushId) {
-        disableDrag($el, $img);
+    if (opts.clickId || opts.dblclickId || opts.hoverId || opts.brushId) {
+      $el.addClass("crosshair");
+    }
 
-        if ($el.data("updateBrushHandler")) {
-          $el.data("updateBrushHandler")(optsCoordmap);
-        } else {
-          const brushHandler = createBrushHandler(
-            opts.brushId,
-            $el,
-            opts,
-            optsCoordmap,
-            outputId
-          );
-
-          $el.on("mousedown.image_output", brushHandler.mousedown);
-          $el.on("mousemove.image_output", brushHandler.mousemove);
-
-          // resize handler is used for cached plots!
-          $el.on("resize.image_output", brushHandler.onResize);
-          $el.on("reset.image_output", brushHandler.onResetImg);
-          $el.data("updateBrushHandler", brushHandler.updateCoordmap);
-        }
-      }
-
-      if (opts.clickId || opts.dblclickId || opts.hoverId || opts.brushId) {
-        $el.addClass("crosshair");
-      }
-
-      if (data.error)
-        console.log("Error on server extracting coordmap: " + data.error);
-    });
+    if (data.error)
+      console.log("Error on server extracting coordmap: " + data.error);
+    //});
   }
 
   renderError(el: HTMLElement, err: ErrorsMessageValue): void {

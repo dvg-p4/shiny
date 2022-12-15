@@ -1,4 +1,4 @@
-/*! shiny 1.7.2.9007 | (c) 2012-2022 RStudio, PBC. | License: GPL-3 | file LICENSE */
+/*! shiny 1.7.2.9008 | (c) 2012-2022 RStudio, PBC. | License: GPL-3 | file LICENSE */
 (function() {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
@@ -10849,71 +10849,64 @@
         }
         console.log("coordmap possibly before load:");
         console.log(opts.coordmap);
-        $img.off("load.shiny_image_interaction");
-        $img.one("load.shiny_image_interaction", function() {
-          console.log("coordmap right before initialization:");
-          console.log(opts.coordmap);
-          var optsCoordmap = opts.coordmap = initCoordmap($el, opts.coordmap);
-          console.log("coordmap right after initialization:");
-          console.log(opts.coordmap);
-          var clickInfo = createClickInfo($el, opts.dblclickId, opts.dblclickDelay);
-          $el.on("mousedown.image_output", clickInfo.mousedown);
-          if (isIE() && IEVersion() === 8) {
-            $el.on("dblclick.image_output", clickInfo.dblclickIE8);
+        var optsCoordmap = opts.coordmap = initCoordmap($el, opts.coordmap);
+        var clickInfo = createClickInfo($el, opts.dblclickId, opts.dblclickDelay);
+        $el.on("mousedown.image_output", clickInfo.mousedown);
+        if (isIE() && IEVersion() === 8) {
+          $el.on("dblclick.image_output", clickInfo.dblclickIE8);
+        }
+        if (opts.clickId) {
+          disableDrag($el, $img);
+          if ($el.data("updateClickHandler")) {
+            $el.data("updateClickHandler")(optsCoordmap);
+          } else {
+            var clickHandler = createClickHandler(opts.clickId, opts.clickClip, optsCoordmap);
+            $el.on("mousedown2.image_output", clickHandler.mousedown);
+            $el.on("reset.image_output", clickHandler.onResetImg);
+            $el.data("updateClickHandler", clickHandler.updateCoordmap);
           }
-          if (opts.clickId) {
-            disableDrag($el, $img);
-            if ($el.data("updateClickHandler")) {
-              $el.data("updateClickHandler")(optsCoordmap);
-            } else {
-              var clickHandler = createClickHandler(opts.clickId, opts.clickClip, optsCoordmap);
-              $el.on("mousedown2.image_output", clickHandler.mousedown);
-              $el.on("reset.image_output", clickHandler.onResetImg);
-              $el.data("updateClickHandler", clickHandler.updateCoordmap);
-            }
+        }
+        if (opts.dblclickId) {
+          disableDrag($el, $img);
+          if ($el.data("updateDblClickHandler")) {
+            $el.data("updateDblClickHandler")(optsCoordmap);
+          } else {
+            var dblclickHandler = createClickHandler(opts.dblclickId, opts.clickClip, optsCoordmap);
+            $el.on("dblclick2.image_output", dblclickHandler.mousedown);
+            $el.on("reset.image_output", dblclickHandler.onResetImg);
+            $el.data("updateDblClickHandler", dblclickHandler.updateCoordmap);
           }
-          if (opts.dblclickId) {
-            disableDrag($el, $img);
-            if ($el.data("updateDblClickHandler")) {
-              $el.data("updateDblClickHandler")(optsCoordmap);
-            } else {
-              var dblclickHandler = createClickHandler(opts.dblclickId, opts.clickClip, optsCoordmap);
-              $el.on("dblclick2.image_output", dblclickHandler.mousedown);
-              $el.on("reset.image_output", dblclickHandler.onResetImg);
-              $el.data("updateDblClickHandler", dblclickHandler.updateCoordmap);
-            }
+        }
+        if (opts.hoverId) {
+          disableDrag($el, $img);
+          if ($el.data("updateHoverHandler")) {
+            $el.data("updateHoverHandler")(optsCoordmap);
+          } else {
+            var hoverHandler = createHoverHandler(opts.hoverId, opts.hoverDelay, opts.hoverDelayType, opts.hoverClip, opts.hoverNullOutside, optsCoordmap);
+            $el.on("mousemove.image_output", hoverHandler.mousemove);
+            $el.on("mouseout.image_output", hoverHandler.mouseout);
+            $el.on("reset.image_output", hoverHandler.onResetImg);
+            $el.data("updateHoverHandler", hoverHandler.updateCoordmap);
           }
-          if (opts.hoverId) {
-            disableDrag($el, $img);
-            if ($el.data("updateHoverHandler")) {
-              $el.data("updateHoverHandler")(optsCoordmap);
-            } else {
-              var hoverHandler = createHoverHandler(opts.hoverId, opts.hoverDelay, opts.hoverDelayType, opts.hoverClip, opts.hoverNullOutside, optsCoordmap);
-              $el.on("mousemove.image_output", hoverHandler.mousemove);
-              $el.on("mouseout.image_output", hoverHandler.mouseout);
-              $el.on("reset.image_output", hoverHandler.onResetImg);
-              $el.data("updateHoverHandler", hoverHandler.updateCoordmap);
-            }
+        }
+        if (opts.brushId) {
+          disableDrag($el, $img);
+          if ($el.data("updateBrushHandler")) {
+            $el.data("updateBrushHandler")(optsCoordmap);
+          } else {
+            var brushHandler = createBrushHandler(opts.brushId, $el, opts, optsCoordmap, outputId);
+            $el.on("mousedown.image_output", brushHandler.mousedown);
+            $el.on("mousemove.image_output", brushHandler.mousemove);
+            $el.on("resize.image_output", brushHandler.onResize);
+            $el.on("reset.image_output", brushHandler.onResetImg);
+            $el.data("updateBrushHandler", brushHandler.updateCoordmap);
           }
-          if (opts.brushId) {
-            disableDrag($el, $img);
-            if ($el.data("updateBrushHandler")) {
-              $el.data("updateBrushHandler")(optsCoordmap);
-            } else {
-              var brushHandler = createBrushHandler(opts.brushId, $el, opts, optsCoordmap, outputId);
-              $el.on("mousedown.image_output", brushHandler.mousedown);
-              $el.on("mousemove.image_output", brushHandler.mousemove);
-              $el.on("resize.image_output", brushHandler.onResize);
-              $el.on("reset.image_output", brushHandler.onResetImg);
-              $el.data("updateBrushHandler", brushHandler.updateCoordmap);
-            }
-          }
-          if (opts.clickId || opts.dblclickId || opts.hoverId || opts.brushId) {
-            $el.addClass("crosshair");
-          }
-          if (data.error)
-            console.log("Error on server extracting coordmap: " + data.error);
-        });
+        }
+        if (opts.clickId || opts.dblclickId || opts.hoverId || opts.brushId) {
+          $el.addClass("crosshair");
+        }
+        if (data.error)
+          console.log("Error on server extracting coordmap: " + data.error);
       }
     }, {
       key: "renderError",
@@ -13237,7 +13230,7 @@
   var windowShiny2;
   function setShiny(windowShiny_) {
     windowShiny2 = windowShiny_;
-    windowShiny2.version = "1.7.2.9007";
+    windowShiny2.version = "1.7.2.9008";
     var _initInputBindings = initInputBindings(), inputBindings = _initInputBindings.inputBindings, fileInputBinding2 = _initInputBindings.fileInputBinding;
     var _initOutputBindings = initOutputBindings(), outputBindings = _initOutputBindings.outputBindings;
     setFileInputBinding(fileInputBinding2);
