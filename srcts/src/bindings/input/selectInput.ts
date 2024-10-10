@@ -142,11 +142,13 @@ class SelectInputBinding extends InputBinding {
         };
       };
 
+      console.log("clearing options");
       selectize.clearOptions();
       // If a new `selected` value is provided, also clear the current selection (otherwise it gets added as an option).
       // Note: although the selectize docs suggest otherwise, as of selectize.js >v0.15.2,
       // .clearOptions() no longer implicitly .clear()s (see #3967)
       if (hasDefinedProperty(data, "value")) {
+        console.log("clearing selection");
         selectize.clear();
       }
       let loaded = false;
@@ -187,9 +189,13 @@ class SelectInputBinding extends InputBinding {
             callback(res);
             if (!loaded) {
               if (hasDefinedProperty(data, "value")) {
+                console.log("value defined, setting value");
+                console.log(data.value);
                 selectize.setValue(data.value as any);
               } else if (settings.maxItems === 1) {
                 // first item selected by default only for single-select
+                console.log("value not defined, setting value to first item");
+                console.log(res[0].value);
                 selectize.setValue(res[0].value);
               }
             }
