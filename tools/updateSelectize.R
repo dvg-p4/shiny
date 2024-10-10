@@ -13,7 +13,7 @@ if (Sys.which("yarn") == "") {
 
 system("yarn install")
 
-node_dir <- find_package_root_file("node_modules/@selectize/selectize/dist")
+node_dir <- find_package_root_file("node_modules/selectize/dist")
 inst_dir <- find_package_root_file("inst/www/shared/selectize")
 
 unlink(inst_dir, recursive = TRUE)

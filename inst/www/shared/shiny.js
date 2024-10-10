@@ -10662,8 +10662,10 @@
         }
         if (hasDefinedProperty(data, "url")) {
           var _selectize2 = this._selectize(el);
+          console.log("clearing options");
           _selectize2.clearOptions();
           if (hasDefinedProperty(data, "value")) {
+            console.log("clearing selection");
             _selectize2.clear();
           }
           var loaded = false;
@@ -10693,8 +10695,12 @@
                 callback(res);
                 if (!loaded) {
                   if (hasDefinedProperty(data, "value")) {
+                    console.log("value defined, setting value");
+                    console.log(data.value);
                     _selectize2.setValue(data.value);
                   } else if (settings.maxItems === 1) {
+                    console.log("value not defined, setting value to first item");
+                    console.log(res[0].value);
                     _selectize2.setValue(res[0].value);
                   }
                 }

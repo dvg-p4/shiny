@@ -1844,19 +1844,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@selectize/selectize@https://github.com/selectize/selectize.js.git#e3f2e0b4aa251375bc21b5fcd8ca7d374a921f08":
-  version: 0.15.2
-  resolution: "@selectize/selectize@https://github.com/selectize/selectize.js.git#commit=e3f2e0b4aa251375bc21b5fcd8ca7d374a921f08"
-  peerDependencies:
-    jquery: ^1.7.0 || ^2 || ^3
-    jquery-ui: ^1.13.2
-  peerDependenciesMeta:
-    jquery-ui:
-      optional: true
-  checksum: ba260ba5804c16b1455ff79f9d00ce860e12ae36e29d7a5f702da6b384c9454497421b8e06fe683d10fac53e2dc6ec008da4fa129a153cbbfe5396e027eb4247
-  languageName: node
-  linkType: hard
-
 "@sinclair/typebox@npm:^0.25.16":
   version: 0.25.24
   resolution: "@sinclair/typebox@npm:0.25.24"
@@ -2213,7 +2200,6 @@ __metadata:
     "@babel/preset-typescript": ^7.13.0
     "@babel/runtime": ^7.14.0
     "@deanc/esbuild-plugin-postcss": ^1.0.2
-    "@selectize/selectize": "https://github.com/selectize/selectize.js.git#e3f2e0b4aa251375bc21b5fcd8ca7d374a921f08"
     "@testing-library/dom": ^7.31.0
     "@testing-library/jest-dom": ^5.12.0
     "@testing-library/user-event": ^13.1.9
@@ -2258,6 +2244,7 @@ __metadata:
     prettier-plugin-organize-imports: ^3.2.4
     readcontrol: ^1.0.0
     replace: ^1.2.1
+    selectize: "dvg-p4/selectize.js#build-fix-clearOptions"
     ts-jest: ^26
     ts-node: ^10.9.1
     type-coverage: ^2.22.0
@@ -8963,6 +8950,19 @@ __metadata:
   dependencies:
     xmlchars: ^2.2.0
   checksum: 5636b55cf15f7cf0baa73f2797bf992bdcf75d1b39d82c0aa4608555c774368f6ac321cb641fd5f3d3ceb87805122cd47540da6a7b5960fe0dbdb8f8c263f000
+  languageName: node
+  linkType: hard
+
+"selectize@dvg-p4/selectize.js#build-fix-clearOptions":
+  version: 0.15.2
+  resolution: "selectize@https://github.com/dvg-p4/selectize.js.git#commit=9fed63c3d3364a0843176413f532db206fa74632"
+  peerDependencies:
+    jquery: ^1.7.0 || ^2 || ^3
+    jquery-ui: ^1.13.2
+  peerDependenciesMeta:
+    jquery-ui:
+      optional: true
+  checksum: c7164c3190d461ff7dd12f2d7b653f2ae87e8558d6014437d42320bce87b7a8ebfa52410e65409748b0252842a6a924e42334dba4aaa15d880285b1509e4a063
   languageName: node
   linkType: hard
 

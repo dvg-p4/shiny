@@ -3,7 +3,7 @@
  * https://selectize.dev
  *
  * Copyright (c) 2013-2015 Brian Reavis & contributors
- * Copyright (c) 2020-2023 Selectize Team & contributors
+ * Copyright (c) 2020-2024 Selectize Team & contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at:
@@ -1187,6 +1187,10 @@ $.extend(Selectize.prototype, {
 		var defaultPrevented = e.isDefaultPrevented();
 		var $target = $(e.target);
 
+		if (e.button && e.button === 2) {
+			return;
+		}
+
 		if (!self.isFocused) {
 			if (!defaultPrevented) {
         window.setTimeout(function () {
@@ -1439,6 +1443,10 @@ $.extend(Selectize.prototype, {
 		if (e.preventDefault) {
 			e.preventDefault();
 			e.stopPropagation();
+		}
+
+		if (e.button && e.button === 2) {
+			return;
 		}
 
 		$target = $(e.currentTarget);
@@ -1979,22 +1987,28 @@ $.extend(Selectize.prototype, {
 		self.removeItem(value, silent);
 	},
 
-	clearOptions: function(silent) {
+	clearOptions: function(silent = false, removeCurrentItems = true) {
 		var self = this;
 
 		self.loadedSearches = {};
 		self.userOptions = {};
 		self.renderCache = {};
-		var options = self.options;
-		$.each(self.options, function(key, value) {
-			if(self.items.indexOf(key) == -1) {
-				delete options[key];
-			}
-		});
-		self.options = self.sifter.items = options;
+		if (removeCurrentItems) {
+			self.options = self.sifter.items = {};
+		} else {
+			var options = self.options;
+			$.each(self.options, function(key, value) {
+				if(self.items.indexOf(key) == -1) {
+					delete options[key];
+				}
+			});
+			self.options = self.sifter.items = options;
+		}
 		self.lastQuery = null;
 		self.trigger('option_clear');
-		self.clear(silent);
+		if (removeCurrentItems) {
+			self.clear(silent);
+		}
 	},
 
 	getOption: function(value) {
@@ -2888,8 +2902,8 @@ $.fn.selectize = function (settings_user) {
       }
 
       var option = readData($option) || {};
-      option[field_label] = option[field_label] || $option.text();
       option[field_value] = option[field_value] || value;
+      option[field_label] = option[field_label] || $option.text() || option[field_value];
       option[field_disabled] = option[field_disabled] || $option.prop('disabled');
       option[field_optgroup] = option[field_optgroup] || group;
       option.styles = $option.attr('style') || '';
