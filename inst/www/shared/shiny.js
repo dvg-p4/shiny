@@ -10662,8 +10662,15 @@
         }
         if (hasDefinedProperty(data, "url")) {
           var _selectize2 = this._selectize(el);
-          _selectize2.clear();
-          _selectize2.clearOptions();
+          if (hasDefinedProperty(data, "value")) {
+            _selectize2.clear(true);
+            _selectize2.clearOptions();
+          } else {
+            _selectize2.clearOptions();
+            for (var opt in _selectize2.options) {
+              _selectize2.addItem(opt);
+            }
+          }
           var loaded = false;
           _selectize2.settings.load = function(query, callback) {
             var settings = _selectize2.settings;
@@ -10692,8 +10699,6 @@
                 if (!loaded) {
                   if (hasDefinedProperty(data, "value")) {
                     _selectize2.setValue(data.value);
-                  } else if (settings.maxItems === 1) {
-                    _selectize2.setValue(res[0].value);
                   }
                 }
                 loaded = true;

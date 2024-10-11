@@ -142,12 +142,27 @@ class SelectInputBinding extends InputBinding {
         };
       };
 
-      // Calling selectize.clear() first works around https://github.com/selectize/selectize.js/issues/2146:
+      // Work around https://github.com/selectize/selectize.js/issues/2146:
       // As of selectize.js >= v0.13.1, .clearOptions() clears the selection, but does NOT remove the
-      // previously-selected options. So unless we do a manual .clear() first, the current selection(s)
-      // will remain as (deselected) options. See #3966
-      selectize.clear();
-      selectize.clearOptions();
+      // previously-selected options. So unless we do a manual .clear() before, or .addItems() after,
+      // the current selection(s) will remain as deselected options. See #3966
+      if (hasDefinedProperty(data, "value")) {
+        // If we're setting a new value, clear the current selection
+        selectize.clear(true);
+        // We should pass `true` for the `silent` parameter to avoid sending a spurious NULL,
+        // but we can't due to https://github.com/DefinitelyTyped/DefinitelyTyped/issues/69495
+        selectize.clearOptions();
+      } else {
+        // If we're not setting a new value, keep the current selection
+        // We should pass `true` for the `silent` parameter, but can't (see above)
+        selectize.clearOptions();
+        // addItems() doesn't have a TypeScript definition so we need to manually iterate
+        // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/69377
+        for (const opt in selectize.options) {
+          selectize.addItem(opt);
+        }
+      }
+
       let loaded = false;
 
       selectize.settings.load = function (query: string, callback: CallbackFn) {
@@ -187,10 +202,8 @@ class SelectInputBinding extends InputBinding {
             if (!loaded) {
               if (hasDefinedProperty(data, "value")) {
                 selectize.setValue(data.value);
-              } else if (settings.maxItems === 1) {
-                // first item selected by default only for single-select
-                selectize.setValue(res[0].value);
               }
+              // Leave the current value selected if a new selection wasn't specified
             }
             loaded = true;
           },
